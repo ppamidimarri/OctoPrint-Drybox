@@ -1,5 +1,5 @@
-#tab_plugin_helloworld iframe {
+#tab_plugin_drybox iframe {
   width: 100%;
-  height: 600px;
+  height: 100%;
   border: 1px solid #808080;
 }

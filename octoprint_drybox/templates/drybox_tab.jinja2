@@ -1,7 +1,9 @@
-<div class="input-append">
-    <input type="text" class="input-xxlarge" data-bind="value: newUrl">
-    <button class="btn btn-primary" data-bind="click: goToUrl">{{ _('Go') }}</button>
+<!-- ko allowBindings: true -->
+<h1>Drybox Status</h1>
+
+<div data-bind="foreach: drybox_profiles">
+    <button class="btn btn-block" data-bind="click: loadLink, text: name, enable: isButtonEnabled">Default (before bind)</button>
 </div>
 
-
-<iframe data-bind="attr: {src: currentUrl}"></iframe>
+<iframe id="#link_frame"></iframe>
+<!-- /ko -->

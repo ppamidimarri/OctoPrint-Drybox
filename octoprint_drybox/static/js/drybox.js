@@ -8,28 +8,56 @@ $(function() {
     function DryboxViewModel(parameters) {
         var self = this;
 
+        var linkFrame = $('#link_frame');
+
         self.settings = parameters[0];
 
-        // this will hold the URL currently displayed by the iframe
-        self.currentUrl = ko.observable();
-
-        // this will hold the URL entered in the text field
-        self.newUrl = ko.observable();
-
-        // this will be called when the user clicks the "Go" button and set the iframe's URL to
-        // the entered URL
-        self.goToUrl = function() {
-            self.currentUrl(self.newUrl());
-        };
+        self.drybox_profiles = ko.observable();
+        self.enabed_buttons = ko.observable();
 
         // This will get called before the DryboxViewModel gets bound to the DOM, but after its
         // dependencies have already been initialized. It is especially guaranteed that this method
         // gets called _after_ the settings have been retrieved from the OctoPrint backend and thus
         // the SettingsViewModel been properly populated.
         self.onBeforeBinding = function() {
-            self.newUrl(self.settings.settings.plugins.drybox.url());
-            self.goToUrl();
-        }
+            self.drybox_profiles(self.settings.settings.plugins.drybox.drybox_profiles());
+            self.loadLink(self.drybox_profiles()[0]);
+        };
+
+        self.onEventSettingsUpdated = function(payload) {
+            self.drybox_profiles(self.settings.settings.plugins.drybox.drybox_profiles());
+        };
+
+        self.addDryboxProfile = function() {
+            self.settings.settings.plugins.drybox.drybox_profiles.push({name: ko.observable('Link '+self.drybox_profiles().length), url: ko.observable('http://'), isButtonEnabled: ko.observable(true)});
+            self.drybox_profiles(self.settings.settings.profiles.drybox.drybox_profiles());
+        };
+
+        self.removeDryboxProfile = function(profile) {
+            self.settings.settings.plugins.drybox.drybox_profiles.remove(profile);
+            self.drybox_profiles(self.settings.plugins.drybox.drybox_profiles());
+        };
+
+        self.loadLink = function(profile, event) {
+            linkFrame.attr('src', ko.toJS(profile).url);
+            ko.utils.arrayForEach(self.drybox_profiles(), function (item) {
+                if(profile==item) {
+                    item.isButtonEnabled(false);
+                } else {
+                    item.isButtonEnabled(true);
+                }
+            });
+        };
+
+        self.onAfterTabChange = function(current, previous) {
+            ko.utils.arrayForEach(self.drybox_profiles(), function (item, index) {
+                if(index==0) {
+                    item.isButtonEnabled(false);
+                } else {
+                    item.isButtonEnabled(true);
+                }
+            });
+        };
      }
 
     /* view model class, parameters for constructor, container to bind to
@@ -41,6 +69,6 @@ $(function() {
         // ViewModels your plugin depends on, e.g. loginStateViewModel, settingsViewModel, ...
         dependencies: [ "settingsViewModel" ],
         // Elements to bind to, e.g. #settings_plugin_drybox, #tab_plugin_drybox, ...
-        elements: [ "#tab_plugin_drybox" ]
+        elements: [ "#settings_plugin_drybox_form", "#tab_plugin_drybox" ]
     });
 });
