@@ -1,27 +1,8 @@
-<!-- ko allowBindings: true -->
-<form id="settings_plugin_drybox_form" class="form-horizontal">
-    <h3>{{ _('Drybox Profiles') }}</h3>
-    <div class="row-fluid">
-        <div class="span5"><h4>{{ _('Name') }}</h4></div>
-        <div class="span5"><h4>{{ _('URL') }}</h4></div>
-    </div>
-    <div data-bind="foreach: settings.settings.plugins.drybox.drybox_profiles">
-        <div class="row-fluid" style="margin-bottom: 5px">
-            <div class="span5">
-                <input type="text" class="span12 text-right" data-bind="value: name">
-            </div>
-            <div class="input-append span5">
-                <input type="text" class="span12 text-right" data-bind="value: url, attr: { 'title': 'URL of drybox status' }">
-            </div>
-            <div class="span2">
-                <button title="Remove Drybox Link" class="btn btn-danger" data-bind="click: $parent.removeDryboxProfile, enable: $index()!==0, attr: { 'title': $index()!==0 ? 'Remove Drybox Link' : 'Default cannot be removed!' }"><i class="fa fa-trash-o"></i></button>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="offset10 span2">
-            <button title="Add Drybox Link" class="btn btn-primary" data-bind="click: addDryboxProfile"><i class="fa fa-plus"></i></button>
+<form class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label">{{ _('URL') }}</label>
+        <div class="controls">
+            <input type="text" class="input-block-level" data-bind="value: settings.plugins.drybox.url">
         </div>
     </div>
 </form>
-<!-- /ko -->

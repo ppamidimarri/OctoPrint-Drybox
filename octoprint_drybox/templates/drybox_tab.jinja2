@@ -1,9 +1,3 @@
-<!-- ko allowBindings: true -->
 <h1>Drybox Status</h1>
 
-<div data-bind="foreach: drybox_profiles">
-    <button class="btn btn-block" data-bind="click: loadLink, text: name, enable: isButtonEnabled">Default (before bind)</button>
-</div>
-
-<iframe id="#link_frame"></iframe>
-<!-- /ko -->
+<iframe id="#link_frame" data-bind="attr: {src: currentUrl}"></iframe>
